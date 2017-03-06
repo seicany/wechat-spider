@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+
 __author__ = 'yijingping'
 import json
 import requests
@@ -23,7 +24,9 @@ from .extractors import download_to_oss
 CRAWLER_CONFIG = settings.CRAWLER_CONFIG
 
 import logging
+
 logging.basicConfig()
+
 
 @login_required
 def index(request):
@@ -187,7 +190,7 @@ def wechat_topics(request, id_):
     params = request.GET.copy()
     _obj_list = Topic.objects.filter(wechat=wechat).order_by('-publish_time')
 
-    paginator = Paginator(_obj_list, 50 )  # Show 10 contacts per page
+    paginator = Paginator(_obj_list, 50)  # Show 10 contacts per page
 
     page = request.GET.get('page')
     try:
@@ -234,7 +237,7 @@ def topic_edit(request, id_):
 @login_required
 def topic_add(request):
     url = request.POST.get('url', '')
-    if url.startswith('http://mp.weixin.qq.com/') or url.startswith('https://mp.weixin.qq.com/') :
+    if url.startswith('http://mp.weixin.qq.com/') or url.startswith('https://mp.weixin.qq.com/'):
         data = {
             'kind': KIND_DETAIL,
             'url': url
@@ -246,7 +249,6 @@ def topic_add(request):
     else:
         messages.error(request, 'url 错误, 添加失败')
     return redirect(reverse('wechat.topic_list'))
-
 
 
 def search(request):
@@ -265,21 +267,21 @@ def search_wechat(query):
         proxies = {}
     print proxies
     headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.118 Safari/537.36'
+        'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.118 Safari/537.36'
     }
     rsp = requests.get("http://weixin.sogou.com/weixin",
                        params={"type": 1, "query": query},
                        proxies=proxies, headers=headers
-    )
+                       )
     rsp.close()
     rsp.encoding = rsp.apparent_encoding
-    #print rsp.content
+    # print rsp.content
     htmlparser = etree.HTMLParser()
     tree = etree.parse(StringIO(rsp.text), htmlparser)
     nodes = tree.xpath('//ul[@class="news-list2"]/li')
     wechats = []
     for node in nodes:
-        name =  ''.join([x for x in node.find(".//p[@class='tit']/a").itertext() if x not in ["red_beg", "red_end"]])
+        name = ''.join([x for x in node.find(".//p[@class='tit']/a").itertext() if x not in ["red_beg", "red_end"]])
         avatar = node.find(".//div[@class='img-box']/a/img").attrib['src']
         qrcode = node.find(".//div[@class='ew-pop']/span/img").attrib['src']
         wechatid = node.find(".//label[@name='em_weixinhao']").text
@@ -304,7 +306,7 @@ def keywords_list(request):
     params = request.GET.copy()
     _obj_list = Word.objects.order_by('-id')
 
-    paginator = Paginator(_obj_list, 50 )  # Show 10 contacts per page
+    paginator = Paginator(_obj_list, 50)  # Show 10 contacts per page
 
     page = request.GET.get('page')
     try:
@@ -370,7 +372,7 @@ def api_search(request):
 def api_topic_add(request):
     url = request.POST.get('url', '')
     logging.error(url)
-    if url.startswith('http://mp.weixin.qq.com/') or url.startswith('https://mp.weixin.qq.com/') :
+    if url.startswith('http://mp.weixin.qq.com/') or url.startswith('https://mp.weixin.qq.com/'):
         data = {
             'kind': KIND_DETAIL,
             'url': url
@@ -421,9 +423,9 @@ def api_add(request):
         })
         if created:
             return JsonResponse({
-                    'ret': 0,
-                    'message': '已添加'
-                })
+                'ret': 0,
+                'message': '已添加'
+            })
         else:
             return JsonResponse({
                 'ret': 0,
