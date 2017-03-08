@@ -9,5 +9,6 @@ selenium==2.52.0
 PyVirtualDisplay==0.1.5
 python-dateutil==2.5.0
 beautifulsoup4==4.4.1
+supervisor
 
 
