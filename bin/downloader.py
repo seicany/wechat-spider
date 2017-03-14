@@ -49,15 +49,16 @@ class Downloader(object):
             r.delete(CRAWLER_CONFIG["downloader"])
         while True:
             try:
-                resp_data = r.brpop(settings.CRAWLER_CONFIG["downloader"])
+                resp_data = r.brpop(settings.CRAWLER_CONFIG["downloader"])  # 获取下载列表的最后一个任务,并从列表中移除
+                logger.debug(resp_data)
             except Exception as e:
-                print e
+                logger.error(e)
                 continue
 
             try:
                 data = json.loads(resp_data[1])
 
-                logger.debug(data)
+                logger.debug(data)  # {u'kind': 3, u'word': u'\u623f\u5730\u4ea7'}
                 is_limited, proxy = self.check_limit_speed()
                 if is_limited:
                     print '# 被限制, 放回去, 下次下载'
@@ -91,7 +92,7 @@ class Downloader(object):
 
                     time.sleep(randint(1, 5))
             except Exception as e:
-                print e
+                logger.error(e)
                 raise
 
 

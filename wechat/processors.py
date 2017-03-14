@@ -4,6 +4,7 @@ from wechatspider.util import get_uniqueid
 from wechat.constants import KIND_DETAIL, KIND_KEYWORD
 from wechat.models import Wechat
 
+
 class DjangoModelBackend(object):
     def __init__(self, _class):
         self._class = _class
@@ -46,4 +47,3 @@ class DjangoModelBackend(object):
             params.pop('retry', None)
             params['uniqueid'] = get_uniqueid('%s:%s' % (params['wechat_id'], params['title']))
             C.objects.update_or_create(uniqueid=params['uniqueid'], defaults=params)
-

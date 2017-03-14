@@ -18,11 +18,11 @@ from django.contrib import admin
 from django.views.generic.base import RedirectView
 
 urlpatterns = [
-    url(r'^$', RedirectView.as_view(url='wechat/', permanent=False)),
-
     url(r'^admin/', include(admin.site.urls)),
+
+    url(r'^$', RedirectView.as_view(url='wechat/', permanent=False)),
     url(r'^wechat/', include('wechat.urls')),
 
-    url(r'^api/wechat/', include('wechat.api_urls')),
+    url(r'^api/wechat/', include('wechat.api_urls'))
 
 ]

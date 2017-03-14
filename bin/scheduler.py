@@ -25,6 +25,7 @@ class Scheduler(object):
     def run(self):
         r = get_redis()
         if settings.CRAWLER_DEBUG:
+            logger.debug('调试模式')
             r.delete(settings.CRAWLER_CONFIG["downloader"])
 
         while True:
@@ -42,7 +43,6 @@ class Scheduler(object):
 
                 # 更新index_rule
                 item.next_crawl_time = now + timedelta(minutes=item.frequency)
-                #item.next_crawl_time = now + timedelta(seconds=item.frequency)
                 item.save()
 
                 logging.debug(data)
@@ -59,7 +59,6 @@ class Scheduler(object):
 
                 # 更新index_rule
                 item.next_crawl_time = now + timedelta(minutes=item.frequency)
-                #item.next_crawl_time = now + timedelta(seconds=item.frequency)
                 item.save()
 
                 logging.debug(data)

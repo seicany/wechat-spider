@@ -3,6 +3,7 @@ __author__ = 'yijingping'
 from django.db import models
 from datetime import date, datetime, timedelta
 
+
 class Wechat(models.Model):
     STATUS_DEFAULT = 0
     STATUS_DISABLE = 1
@@ -44,18 +45,16 @@ class Wechat(models.Model):
 
 class Topic(models.Model):
     wechat = models.ForeignKey('Wechat', verbose_name='公众号')
+
     uniqueid = models.CharField(unique=True, max_length=100, verbose_name='url的md5值')
     words = models.IntegerField(default=0, verbose_name='字数')
-
     url = models.CharField(max_length=500, default='', verbose_name='文章的url')
     avatar = models.CharField(max_length=500, default='', verbose_name='缩略图地址')
     title = models.CharField(max_length=200, verbose_name='标题')
     origin_title = models.CharField(max_length=200, default='', verbose_name='原文标题')
-
     abstract = models.TextField(default='', verbose_name='内容简介')
     content = models.TextField(default='', verbose_name='文章内容')
     source = models.TextField(default='', verbose_name='文章原内容')
-
     read_num = models.IntegerField(default=0, verbose_name='阅读数')
     like_num = models.IntegerField(default=0, verbose_name='点赞数')
 
@@ -76,9 +75,9 @@ class Proxy(models.Model):
     STATUS_SUCCESS = 1
     STATUS_FAIL = 2
     STATUS_CHOICES = (
-        (STATUS_NEW,'未检测'),
-        (STATUS_SUCCESS,'检测成功'),
-        (STATUS_FAIL,'检测失败'),
+        (STATUS_NEW, '未检测'),
+        (STATUS_SUCCESS, '检测成功'),
+        (STATUS_FAIL, '检测失败'),
     )
     KIND_SEARCH = 0
     KIND_DOWNLOAD = 1
@@ -103,10 +102,10 @@ class Proxy(models.Model):
 
 class Word(models.Model):
     KIND_KEYWORD = 0
-    #KIND_TOPIC = 1 #
+    # KIND_TOPIC = 1 #
     KIND_CHOICES = (
         (KIND_KEYWORD, '关键词'),
-        #(KIND_TOPIC, '话题'),
+        # (KIND_TOPIC, '话题'),
     )
     kind = models.IntegerField(default=KIND_KEYWORD, choices=KIND_CHOICES, verbose_name="类型")
     text = models.CharField(max_length=100, verbose_name='词')

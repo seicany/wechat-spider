@@ -19,6 +19,7 @@ from django.conf import settings
 from .util import stringify_children
 
 import logging
+
 logger = logging.getLogger()
 
 CRAWLER_CONFIG = settings.CRAWLER_CONFIG
@@ -72,9 +73,9 @@ class SeleniumDownloaderBackend(object):
         # 启动浏览器
         firefox_profile = webdriver.FirefoxProfile()
         # 禁止加载image
-        #firefox_profile.set_preference('permissions.default.stylesheet', 2)
-        #firefox_profile.set_preference('permissions.default.image', 2)
-        #firefox_profile.set_preference('dom.ipc.plugins.enabled.libflashplayer.so', 'false')
+        # firefox_profile.set_preference('permissions.default.stylesheet', 2)
+        # firefox_profile.set_preference('permissions.default.image', 2)
+        # firefox_profile.set_preference('dom.ipc.plugins.enabled.libflashplayer.so', 'false')
         # 代理
         if proxy.is_valid():
             myProxy = '%s:%s' % (proxy.host, proxy.port)
@@ -223,8 +224,8 @@ class SeleniumDownloaderBackend(object):
             try:
                 Topic.objects.get(uniqueid=uniqueid)
             except Topic.DoesNotExist:
-                #print len(elems), len(hrefs), len(avatars), len(abstracts)
-                #print elems, hrefs, avatars, abstracts
+                # print len(elems), len(hrefs), len(avatars), len(abstracts)
+                # print elems, hrefs, avatars, abstracts
                 links.append((title, hrefs[idx], avatars[idx], abstracts[idx]))
                 logger.debug('文章不存在, title=%s, uniqueid=%s' % (title, uniqueid))
         for title, link, avatar, abstract in reversed(links):
@@ -268,11 +269,12 @@ class SeleniumDownloaderBackend(object):
         htmlparser = etree.HTMLParser()
         tree = etree.parse(StringIO(body), htmlparser)
 
-        elems = [stringify_children(item).replace('red_beg', '').replace('red_end', '') for item in tree.xpath("//div[@class='txt-box']/h3/a")]
+        elems = [stringify_children(item).replace('red_beg', '').replace('red_end', '') for item in
+                 tree.xpath("//div[@class='txt-box']/h3/a")]
         hrefs = tree.xpath("//div[@class='txt-box']/h3/a/@href")
-        #avatars = tree.xpath("//div[@class='img-box']/a/img/@src")
-        #elems_abstracts = tree.xpath("//div[@class='txt-box']/p")
-        #abstracts = [item.text.strip() if item.text else '' for item in elems_abstracts]
+        # avatars = tree.xpath("//div[@class='img-box']/a/img/@src")
+        # elems_abstracts = tree.xpath("//div[@class='txt-box']/p")
+        # abstracts = [item.text.strip() if item.text else '' for item in elems_abstracts]
         avatars = [''] * len(elems)
         abstracts = [''] * len(elems)
         links = []
@@ -285,7 +287,7 @@ class SeleniumDownloaderBackend(object):
             try:
                 Topic.objects.get(uniqueid=uniqueid)
             except Topic.DoesNotExist:
-                #print len(elems), len(hrefs), len(avatars), len(abstracts)
+                # print len(elems), len(hrefs), len(avatars), len(abstracts)
                 print elems, hrefs, avatars, abstracts
                 links.append((title, hrefs[idx], avatars[idx], abstracts[idx]))
                 logger.debug('文章不存在, title=%s, uniqueid=%s' % (title, uniqueid))
